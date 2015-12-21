@@ -2,6 +2,10 @@
 Changelog
 =========
 
+0.2.9.2
+=======
+* (backport) Remove linebreaksbr filter from container content
+
 0.2.9.1
 =======
 * opps.boxes and opps.containers migrations important fixes.
