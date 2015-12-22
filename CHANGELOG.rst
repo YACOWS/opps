@@ -5,6 +5,9 @@ Changelog
 Development
 ===========
 
+0.2.11.1
+========
+* (backport) Remove linebreaksbr filter from container content
 * Fix slug validation, #482
 
 0.2.11
