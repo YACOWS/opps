@@ -5,6 +5,11 @@ Changelog
 Development
 ===========
 
+0.2.11.2
+========
+
+* (backport) Force some caching to all list views
+
 0.2.11.1
 ========
 * (backport) Remove linebreaksbr filter from container content
