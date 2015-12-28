@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site, get_current_site
 from django.utils import timezone
 from django.conf import settings
 
+from opps.core.cache import cache_page
 from opps.views.generic.base import View
 
 from opps.containers.models import Mirror, ContainerBox
@@ -12,6 +13,14 @@ from opps.containers.models import Mirror, ContainerBox
 
 class ListView(View, DjangoListView):
     template_name_suffix = ''
+
+    def dispatch(self, *args, **kwargs):
+        """
+        Force a cache layer for list views
+        """
+        view = super(ListView, self).dispatch
+        cache_timeout = settings.OPPS_CACHE_EXPIRE_LIST
+        return cache_page(cache_timeout)(view)(*args, **kwargs)
 
     def get_template_list(self, domain_folder="containers"):
         templates = []
@@ -80,6 +89,9 @@ class ListView(View, DjangoListView):
         return template_list
 
     def get_queryset(self):
+        if hasattr(self, '_queryset'):
+            return self._queryset
+
         self.fallback = getattr(settings, 'OPPS_MULTISITE_FALLBACK', False)
         self.site = get_current_site(self.request)
         self.site_master = Site.objects.order_by('id')[0]
@@ -125,4 +137,5 @@ class ListView(View, DjangoListView):
             container__channel_long_slug=self.long_slug)]
         queryset = queryset.exclude(pk__in=mirror_excluded)
 
-        return queryset._clone()
+        self._queryset = queryset
+        return queryset
