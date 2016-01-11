@@ -5,6 +5,11 @@ Changelog
 Development
 ===========
 
+0.2.11.3
+========
+
+* (backport) Wrap inserted embed code around paragraphs
+
 0.2.11.2
 ========
 
